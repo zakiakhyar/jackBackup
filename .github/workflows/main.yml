@@ -20,6 +20,11 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{secrets.SSH_PRIVATE_KEY}}
           port: 2024
+      - name: Debug SSH
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
+          chmod 600 private_key
+          ssh -i private_key -o StrictHostKeyChecking=no root@123.108.97.5 -p 2024 "echo 'SSH connection successful'"
 
       - name: Deploy application
         run: |
