@@ -21,18 +21,13 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2024
           sync: false
-          use_insecure_cipher: false
+          use_insecure_cipher: true
           timeout: 30s
           command_timeout: 10m
           script_stop: false
           debug: true  # Enable debug for more detailed logs
 
-      - name: Debug SSH
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
-          chmod 600 private_key
-          ssh -i private_key -o StrictHostKeyChecking=no root@123.108.97.5 -p 2024 "echo 'SSH connection successful'"
-
       - name: Deploy application
         run: |
-          ls /root/
+          whoami
+          pwd
