@@ -20,14 +20,17 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2024
-          sync: false
-          use_insecure_cipher: true
-          timeout: 30s
-          command_timeout: 10m
-          script_stop: false
-          debug: true  # Enable debug for more detailed logs
-
-      - name: Deploy application
-        run: |
-          whoami
-          pwd
+          script: |
+            # Create a temporary directory
+            TEMP_DIR=$(mktemp -d)
+            # Copy the repository to the temporary directory
+            git clone $GITHUB_REPOSITORY $TEMP_DIR
+            # Remove the existing content in the /www/ directory
+            sudo rm -rf /www/*
+            # Copy the new content to the /www/ directory
+            sudo cp -R $TEMP_DIR/* /www/
+            # Change the ownership to www user
+            sudo chown -R www:www /www/
+            # Clean up the temporary directory
+            rm -rf $TEMP_DIR
+            sudo ls -laht /www/
