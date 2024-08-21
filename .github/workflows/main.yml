@@ -18,8 +18,15 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{secrets.SSH_PRIVATE_KEY}}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 2024
+          sync: false
+          use_insecure_cipher: false
+          timeout: 30s
+          command_timeout: 10m
+          script_stop: false
+          debug: true  # Enable debug for more detailed logs
+
       - name: Debug SSH
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key
